@@ -53,7 +53,8 @@ jobs:
         env:
           number: ${{ github.event.client_payload.pull_request.number }}
           job: ${{ github.job }}
-          conclusion: ${{ job.status }} 
+          conclusion: ${{ job.status }}
+          image: ${{ matrix.image }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -62,13 +63,13 @@ jobs:
               pull_number: process.env.number
             });
             const ref = pull.head.sha;
-            console.log(ref);
+
             const { data: checks } = await github.rest.checks.listForRef({
               ...context.repo,
               ref
             });
-            console.log(JSON.stringify(checks));
-            const check = checks.check_runs.filter(c => c.name === process.env.job);
+
+            const check = checks.check_runs.filter(c => c.name === process.env.image);
             const { data: result } = await github.rest.checks.update({
               ...context.repo,
               check_run_id: check[0].id,
