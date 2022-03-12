@@ -47,11 +47,6 @@ jobs:
             });
             return check;
 
-      - name: Verify Docker image
-        run: |
-          docker pull ${{ steps.docker.outputs.imageFullName }}:${{ github.run_id }}
-          docker image inspect ${{ steps.docker.outputs.imageFullName }}:${{ github.run_id }}
-
       - name: Update check run
         uses: actions/github-script@v5
         if: ${{ always() }}
@@ -67,10 +62,12 @@ jobs:
               pull_number: process.env.number
             });
             const ref = pull.head.sha;
+            console.log(ref);
             const { data: checks } = await github.rest.checks.listForRef({
               ...context.repo,
               ref
             });
+            console.log(JSON.stringify(checks));
             const check = checks.check_runs.filter(c => c.name === process.env.job);
             const { data: result } = await github.rest.checks.update({
               ...context.repo,
