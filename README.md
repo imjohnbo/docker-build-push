@@ -7,6 +7,8 @@
 
 Builds a Docker image and pushes it to the private registry of your choosing.
 
+DELETE ME
+
 ## Supported Docker registries
 
 - Docker Hub
