@@ -1,7 +1,6 @@
 name: 'e2e Tests'
 
 on:
-  pull_request:
   repository_dispatch:
     types: [ok-to-test-command]
 
